@@ -43,9 +43,9 @@ This project is an AWS Lambda function that bridges between Alexa Smart Home Ski
 
 # Registering devices
 
-All devices must be registered in `discoveryAppliances.json`. Everytime, you add a new device, you have to redeploy the Lambda function.
+All devices must be registered in `discoveryAppliances.json`. Everytime, you add a new device, you have to redeploy the Lambda function. This file should be very similar to the [response of discover appliances]](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/smart-home-skill-api-reference#discoverappliancesresponse).
 
-The following example is the JSON file with one appliance registered, which support turning on/off and setting brightness.
+The following example is the JSON file with one appliance registered, which support turning on/off and setting absolute/relative brightness.
 
 ```json
 [
