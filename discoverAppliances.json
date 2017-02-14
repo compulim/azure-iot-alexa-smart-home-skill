@@ -1,0 +1,19 @@
+[
+  {
+    "actions": [
+      "decrementPercentage",
+      "incrementPercentage",
+      "setPercentage",
+      "turnOff",
+      "turnOn"
+    ],
+    "additionalApplianceDetails": {},
+    "applianceId": "ansluta",
+    "friendlyDescription": "IKEA MAGLEHULT LED cabinet/picture lighting",
+    "friendlyName": "Hallway light",
+    "manufacturerName": "IKEA",
+    "modelName": "MAGLEHULT",
+    "version": "1.0.0",
+    "manufacturer": "IKEA"
+  }
+]
