@@ -12,6 +12,8 @@ Some cool features of Azure IoT Hub that make it a good fit for Alexa Smart Home
 * Ready-to-use sample code for Arduino, ESP8266 and Raspberry
 * [Direct method](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-direct-methods) is a cloud-to-device messaging bus that fit perfectly with Alexa Smart Home Skill API
 
+Since Alexa Smart Home Skill can only talk to AWS Lambda, this prototype runs on AWS Lambda and talks to Azure IoT Hub directly without the need of extra bridge which could increase the latency.
+
 # How to start?
 
 This project is an AWS Lambda function that bridges between Alexa Smart Home Skill and Azure IoT Hub. And it is intended for someone who already have some basic knowledge about Alexa app, AWS Lambda, Azure IoT hub, and programming IoT devices.
@@ -21,17 +23,19 @@ This project is an AWS Lambda function that bridges between Alexa Smart Home Ski
 * Know how to setup Alexa app
 * Know how to setup AWS Lambda
 * Know how to setup Azure IoT Hub
-* Programming IoT device
+* Know hot to program an hobby board
   * ESP8266 board: C programming with Arduino IDE
   * Raspberry Pi: Node.js programming with [azure-iot-sdk-for-node](https://github.com/Azure/azure-iot-sdk-node/blob/master/device/core/readme.md)
 
 ## Preparation
 
+* Create an Azure IoT Hub
+  * Jot down the connection string for service policy, e.g. `HostName=myhome.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=ABCDEFG`
 * Create an Alexa App
 * Create an AWS Lambda
+  * Set environment variable `CUSTOM_CONNSTR_AZURE_IOTHUB` to the IoT Hub connection string
+  * Set handler to `index.handler`
   * Make sure it can be [triggered from an Alexa app]((https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/developing-an-alexa-skill-as-a-lambda-function))
-  * Currently, Alexa Smart Home Skill API must connect to AWS Lambda
-* Create an Azure IoT Hub
 * Grab a board of your choice
   * Customize an [IoT Hub client C sample](https://github.com/Azure/azure-iot-sdk-c/tree/master/iothub_client/samples)
   * Direct methods are used to control your device
@@ -39,7 +43,7 @@ This project is an AWS Lambda function that bridges between Alexa Smart Home Ski
 
 # Registering devices
 
-All devices must be registered in `discoveryAppliances.json`. Everytime, you connect a new device, you have to deploy a new package to AWS Lambda.
+All devices must be registered in `discoveryAppliances.json`. Everytime, you add a new device, you have to redeploy the Lambda function.
 
 The following example is the JSON file with one appliance registered, which support turning on/off and setting brightness.
 
@@ -67,11 +71,11 @@ The following example is the JSON file with one appliance registered, which supp
 
 # Direct methods
 
-Direct methods are C2D (cloud-to-device) request-response messages that are used to control device from Alexa. We will translate requests from Alexa into IoT direct methods, and vice versa.
+Direct methods are C2D (cloud-to-device) request-response messages that are used to control device from Alexa. This prototype will translate requests from Alexa into IoT direct methods, and vice versa.
 
 To enable certain functionality of a device (e.g. turn on/off), you must implement both the direct methods and register these actions in `discoverAppliances.json`.
 
-Behaviors of the following direct methods should align with [Alexa Smart Home Skill API](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/smart-home-skill-api-reference).
+Behaviors of the direct methods should align with [Alexa Smart Home Skill API](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/smart-home-skill-api-reference).
 
 ## Health check
 
@@ -229,5 +233,3 @@ Link to [Alexa API](https://developer.amazon.com/public/solutions/alexa/alexa-sk
 # Deployment
 
 To deploy, compress the directory as a ZIP file and upload to AWS Lambda.
-
-Set the environment variable `CUSTOM_CONNSTR_AZURE_IOTHUB` with the Azure IoT Hub service account connection string. For security reason, service account is preferred over hub owner account.
